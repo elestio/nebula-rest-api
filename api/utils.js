@@ -44,8 +44,7 @@ module.exports.CheckLighthouseInstallation = async () => {
         ./nebula-cert sign -name "lh" -ip "10.255.255.1/8"
         cp lh.crt /etc/nebula/lh.crt;
         cp lh.key /etc/nebula/lh.key;
-        cp lh.yml /etc/nebula/lh.yml;
-
+        
         `);
 
         if (result.err == "" || result.err == null){
