@@ -104,6 +104,12 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
 
 ```json
 {
+    "/api/networks/list": {
+        "path": "/api/networks/list.js",
+        "method": "POST",
+        "parametersList": [],
+        "isPrivate": true
+    },
     "/api/networks/add": {
         "path": "/api/networks/add.js",
         "method": "POST",
@@ -117,6 +123,20 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
         "method": "POST",
         "parametersList": [
             "subnet"
+        ],
+        "isPrivate": true
+    },
+    "/api/users/list": {
+        "path": "/api/users/list.js",
+        "method": "POST",
+        "parametersList": ["subnet"],
+        "isPrivate": true
+    },
+    "/api/users/getConfig": {
+        "path": "/api/users/getConfig.js",
+        "method": "POST",
+        "parametersList": [
+            "ip"
         ],
         "isPrivate": true
     },

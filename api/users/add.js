@@ -93,9 +93,9 @@ module.exports = async (event) => {
     var yml = `
 pki:
   # The CAs that are accepted by this node. Must contain one or more certificates created by 'nebula-cert ca'
-  ca: /tmp/ca.crt
-  cert: /tmp/jo2.crt
-  key: /tmp/jo2.key
+  ca: /etc/nebula/ca.crt
+  cert: /etc/nebula/client.crt
+  key: /etc/nebula/client.key
 
 static_host_map:
   "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]
@@ -149,7 +149,7 @@ firewall:
     # Allow icmp between any nebula hosts
     - port: any
       proto: icmp
-      host: any
+      cidr: ${subnet}/24
 
     # Allow tcp/443 from any host with BOTH laptop and home group
     - port: any
