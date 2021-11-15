@@ -10,6 +10,15 @@ This is useful if you want to manipulate Nebula with a REST API to:
 
 &nbsp;
 
+# Very Quickstart with docker
+
+
+    docker run -d --name nebula-rest-api -p 80:9000 -p 4242:4242/udp -e HOST_DOMAIN=www.yourdomain.com -e NEBULA_REST_API_KEY=VERY_LONG_RANDOM_STRING elestio/nebula-rest-api
+
+
+Read more below for a more complete setup with HTTPS
+
+
 # Quickstart
 
 ## Install Git + Docker.io + docker-compose
@@ -95,12 +104,6 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
 
 ```json
 {
-	"/api/networks/list": {
-        "path": "/api/networks/list.js",
-        "method": "GET",
-        "parametersList": [],
-        "isPrivate": true
-    },
     "/api/networks/add": {
         "path": "/api/networks/add.js",
         "method": "POST",
@@ -115,12 +118,6 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
         "parametersList": [
             "subnet"
         ],
-        "isPrivate": true
-    },
-    "/api/users/list": {
-        "path": "/api/users/list.js",
-        "method": "GET",
-        "parametersList": ["networkID"],
         "isPrivate": true
     },
     "/api/users/add": {
