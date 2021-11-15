@@ -169,6 +169,14 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
     -H 'x-api-key: YOUR_API_KEY_HERE' \
     -d 'networkName=myfirstnetwork1'
 
+Response:
+
+    {
+        "status": "OK",
+        "details": "New network created",
+        "network": "10.17.6.0"
+    }
+
 ## Sample API call with curl to add a new user
 
     curl -X POST \
@@ -176,3 +184,16 @@ You will need to authenticate all API calls by passing a header `x-api-token: ${
     -H 'content-type: application/x-www-form-urlencoded' \
     -H 'x-api-key: YOUR_API_KEY_HERE' \
     -d 'subnet=10.17.3.0&clientName=myserver1'
+
+Response:
+
+    {
+        "status": "OK",
+        "CIDR": "10.17.3.1/8",
+        "ca": "-----BEGIN NEBULA CERTIFICATE-----\nCkEKD25lYnVsYS1yZXN0LWFwaSjk8smMBjDk2c6bBjogfkZnSCnhlLXvw6jdO/6h\nyZwzOXo58uz8yo0NaIViAWJAARJAv1dt2/jw1ZCeGPgz6DNkgRd6uPo/71H5vXWp\n9nqdG2qN3vdxTuueBuV7kN3DVlg2ZlDHvwNj4j86TImA9aqtCg==\n-----END NEBULA CERTIFICATE-----\n",
+        "crt": "-----BEGIN NEBULA CERTIFICATE-----\nCmQKB3Rlc3QxMjMSCYGGxFCAgID4DyjoxsuMBjDj2c6bBjogjgq1/zb/MiRuGcW4\nRY0cEirmvSa5AWeMXuypT5Eh+1RKIPnmGtLYGpSdwXcvMIDkzYlcJkOwBR3WKRpP\nyiNt5tEkEkClf0yGn5XEKAr1O/Ixq2eXr1SNKLGIqXb+7byzCca4/5PfXj8zJPu3\njXg4z86NcsjaTbPWhFJi4OfCihxVnwYP\n-----END NEBULA CERTIFICATE-----\n",
+        "key": "-----BEGIN NEBULA X25519 PRIVATE KEY-----\nVkyOFWYMiSceKHrXTuhtITB7wzPeJoH0oQDA+FYv9i8=\n-----END NEBULA X25519 PRIVATE KEY-----\n",
+        "clientName": "test123",
+        "clientYML": "\npki:\n  # The CAs that are accepted by this node. Must contain one or more certificates created by 'nebula-cert ca'\n  ca: /tmp/ca.crt\n  cert: /tmp/jo2.crt\n  key: /tmp/jo2.key\n\nstatic_host_map:\n  \"10.255.255.1\": [\"vms2.terasp.net:4242\"]\n\n\nlighthouse:\n  am_lighthouse: false\n  interval: 60\n  # hosts is a list of lighthouse hosts this node should report to and query from\n  # IMPORTANT: THIS SHOULD BE EMPTY ON LIGHTHOUSE NODES\n  # IMPORTANT2: THIS SHOULD BE LIGHTHOUSES' NEBULA IPs, NOT LIGHTHOUSES' REAL ROUTABLE IPs\n  hosts:\n    - \"10.255.255.1\"\n\nlisten:\n  # To listen on both any ipv4 and ipv6 use \"[::]\"\n  host: 0.0.0.0\n  port: 4242\n\npunchy:\n  # Continues to punch inbound/outbound at a regular interval to avoid expiration of firewall nat mappings\n  punch: true\n\ntun:\n  disabled: false\n  dev: nebula1\n  drop_local_broadcast: false\n  drop_multicast: false\n  tx_queue: 500\n  mtu: 1300\n\nlogging:\n  level: info\n  format: text\n\n  \nfirewall:\n  conntrack:\n    tcp_timeout: 12m\n    udp_timeout: 3m\n    default_timeout: 10m\n    max_connections: 100000\n\n  outbound:\n    # Allow all outbound traffic from this node\n    - port: any\n      proto: any\n      host: any\n\n  inbound:\n    # Allow icmp between any nebula hosts\n    - port: any\n      proto: icmp\n      host: any\n\n    # Allow tcp/443 from any host with BOTH laptop and home group\n    - port: any\n      proto: any\n      cidr: 10.17.3.0/24\n"
+    }
+

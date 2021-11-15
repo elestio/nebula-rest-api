@@ -49,10 +49,7 @@ module.exports = async (event) => {
     return {  
         httpStatus: "200",
         headers:{ "Content-Type": "application/json" },  
-        content: {
-            status: "OK",
-            config: JSON.parse(config),
-        }  
+        content: JSON.parse(config)
     };
 
 };
