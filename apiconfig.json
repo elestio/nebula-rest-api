@@ -4,12 +4,7 @@
         "cacheDurationForAPI": 5000
     },
     "REST": {
-        "/api/networks/list": {
-            "path": "/api/networks/list.js",
-            "method": "GET",
-            "parametersList": [],
-            "isPrivate": true
-        },
+
         "/api/networks/add": {
             "path": "/api/networks/add.js",
             "method": "POST",
@@ -24,12 +19,6 @@
             "parametersList": [
                 "subnet"
             ],
-            "isPrivate": true
-        },
-        "/api/users/list": {
-            "path": "/api/users/list.js",
-            "method": "GET",
-            "parametersList": ["networkID"],
             "isPrivate": true
         },
         "/api/users/add": {
