@@ -75,9 +75,9 @@ async function runInBGLoop(){
 
         var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
         var isTapDisabled = false;
-        if (runInDocker){
-            isTapDisabled = true;
-        }
+        //if (runInDocker){
+        //    isTapDisabled = true;
+        //}
 
         //write lighthouse config file
         fs.writeFileSync("./nebula/lh.yml", `

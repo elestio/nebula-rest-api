@@ -5,7 +5,7 @@
     },
     "REST": {
         "/api/networks/list": {
-            "path": "/api/networks/listNetworks.js",
+            "path": "/api/networks/list.js",
             "method": "GET",
             "parametersList": [],
             "isPrivate": true
