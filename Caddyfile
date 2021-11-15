@@ -1,0 +1,29 @@
+{
+        auto_https off
+        admin off
+}
+
+:443 {
+        tls test@yopmail.com {
+            on_demand
+        }
+        route /* {
+            reverse_proxy nebula-rest-api:9000
+        }
+} 
+
+{$HOST_DOMAIN}:443 {
+	tls /data/caddy/certificates/cert.pem /data/caddy/certificates/key.pem
+        
+    route /* {
+        reverse_proxy nebula-rest-api:9000
+    }
+
+}
+
+:80 {
+    @http {
+             protocol http
+      }
+      redir @http https://{hostport}{uri} 301
+}

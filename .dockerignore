@@ -1,0 +1,7 @@
+.env
+node_modules
+nebula/networks/*
+nebula/ca.crt
+nebula/ca.key
+nebula/lh.yml
+caddy/*

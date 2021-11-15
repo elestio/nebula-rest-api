@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  nebula-rest-api:
+    image: elestio/nebula-rest-api
+    container_name: nebula-rest-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
+      - "4242:4242"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./nebula:/usr/src/app/nebula
+
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./caddy/:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - $SSL_CERT:/data/caddy/certificates/cert.pem
+      - $SSL_KEY:/data/caddy/certificates/key.pem

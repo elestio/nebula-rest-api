@@ -1,0 +1,56 @@
+{
+    "global":{
+        "cacheDurationForStatic": 5000,
+        "cacheDurationForAPI": 5000
+    },
+    "REST": {
+        "/api/networks/list": {
+            "path": "/api/networks/listNetworks.js",
+            "method": "GET",
+            "parametersList": [],
+            "isPrivate": true
+        },
+        "/api/networks/add": {
+            "path": "/api/networks/add.js",
+            "method": "POST",
+            "parametersList": [
+                "networkName"
+            ],
+            "isPrivate": true
+        },
+        "/api/networks/delete": {
+            "path": "/api/networks/delete.js",
+            "method": "POST",
+            "parametersList": [
+                "subnet"
+            ],
+            "isPrivate": true
+        },
+        "/api/users/list": {
+            "path": "/api/users/list.js",
+            "method": "GET",
+            "parametersList": ["networkID"],
+            "isPrivate": true
+        },
+        "/api/users/add": {
+            "path": "/api/users/add.js",
+            "method": "POST",
+            "parametersList": [
+                "subnet",
+                "clientName"
+            ],
+            "isPrivate": true
+        },
+        "/api/users/delete": {
+            "path": "/api/users/delete.js",
+            "method": "POST",
+            "parametersList": [
+                "ip"
+            ],
+            "isPrivate": true
+        }
+    },
+    "WEBSOCKET": {
+        
+    }
+}

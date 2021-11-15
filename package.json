@@ -1,0 +1,23 @@
+{
+  "name": "nebula-rest-api",
+  "version": "1.0.0",
+  "description": "REST API for Nebula, handle client management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elestio/nebula-rest-api.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elestio/nebula-rest-api/issues"
+  },
+  "homepage": "https://github.com/elestio/nebula-rest-api#readme",
+  "dependencies": {
+    "@elestio/cloudgate": "^1.0.109",
+    "dotenv": "^10.0.0"
+  }
+}
