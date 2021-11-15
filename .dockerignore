@@ -4,4 +4,6 @@ nebula/networks/*
 nebula/ca.crt
 nebula/ca.key
 nebula/lh.yml
+nebula/lh.crt
+nebula/lh.key
 caddy/*

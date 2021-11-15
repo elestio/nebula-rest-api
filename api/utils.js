@@ -32,68 +32,6 @@ module.exports.CheckLighthouseInstallation = async () => {
     else{
         console.log("global cert NOT found!");
 
-        var root = require('path').resolve('./');
-
-        //write lighthouse config file
-        fs.writeFileSync("./nebula/lh.yml", `
-pki:
-    ca: ${root}/nebula/ca.crt
-    cert: ${root}/nebula/lh.crt
-    key: ${root}/nebula/lh.key
-
-static_host_map:
-    "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]
-
-lighthouse:
-    am_lighthouse: true
-    interval: 60
-
-listen:
-    host: 0.0.0.0
-    port: 4242
-
-punchy:
-    punch: true
-
-cipher: aes
-
-
-tun:
-    disabled: false
-    dev: nebula1
-    drop_local_broadcast: false
-    drop_multicast: false
-    tx_queue: 500
-    mtu: 1300
-
-
-logging:
-    level: info
-    format: text
-
-
-# Nebula security group configuration
-firewall:
-conntrack:
-    tcp_timeout: 12m
-    udp_timeout: 3m
-    default_timeout: 10m
-    max_connections: 100000
-
-outbound:
-    # Allow all outbound traffic from this node
-    - port: any
-      proto: any
-      host: any
-
-inbound:
-    # Allow icmp between any nebula hosts
-    - port: any
-      proto: icmp
-      host: any
-`);
-
-
         //create global cert
         var result = await this.execCommand(`
         cd ./nebula;
@@ -129,9 +67,89 @@ inbound:
 //Run Nebula in a background infinite loop 
 //to ensure it will restart in case of crash
 async function runInBGLoop(){
+
+    //console.log(JSON.stringify(await execCommand(`echo "path: $PWD"`)) );
+
+    var root = require('path').resolve('./');
+
+        //console.log("root: ", root)
+
+        var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
+        var isTapDisabled = false;
+        if (runInDocker){
+            isTapDisabled = true;
+        }
+
+        //write lighthouse config file
+        fs.writeFileSync("./nebula/lh.yml", `
+pki:
+    ca: ${root}/nebula/ca.crt
+    cert: ${root}/nebula/lh.crt
+    key: ${root}/nebula/lh.key
+
+static_host_map:
+    "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]
+
+lighthouse:
+    am_lighthouse: true
+    interval: 60
+
+listen:
+    host: 0.0.0.0
+    port: 4242
+
+punchy:
+    punch: true
+
+cipher: aes
+
+
+tun:
+    disabled: ${isTapDisabled}
+    dev: nebula1
+    drop_local_broadcast: false
+    drop_multicast: false
+    tx_queue: 500
+    mtu: 1300
+
+
+logging:
+    level: info
+    format: text
+
+
+# Nebula security group configuration
+firewall:
+conntrack:
+    tcp_timeout: 12m
+    udp_timeout: 3m
+    default_timeout: 10m
+    max_connections: 100000
+
+outbound:
+    # Allow all outbound traffic from this node
+    - port: any
+      proto: any
+      host: any
+
+inbound:
+    # Allow icmp between any nebula hosts
+    - port: any
+      proto: icmp
+      host: any
+`);
+
     while(true){
         await execCommand(`
-        cd ./nebula;
-        ./nebula -config lh.yml`);
+        mkdir -p /etc/nebula/
+        cp ./nebula/ca.crt /etc/nebula/ca.crt
+        cp ./nebula/ca.key /etc/nebula/ca.key
+        
+        cp ./nebula/lh.crt /etc/nebula/lh.crt;
+        cp ./nebula/lh.key /etc/nebula/lh.key;
+        cp ./nebula/lh.yml /etc/nebula/lh.yml;
+
+        ./nebula/nebula -config ./nebula/lh.yml
+        `);
     }
 }
