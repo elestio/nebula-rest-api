@@ -232,7 +232,7 @@ if (isMainThread) {
                 continue; //skip, this is global configuration
             }
 
-            const method = (config.method).toLowerCase() || 'post';
+            const method = (config.method).toLowerCase().replace("delete", "del") || 'post';
 
             let controller = null;
             try{
