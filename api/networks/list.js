@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = async (event) => {  
 
-    var files = getAllFiles('./nebula/networks/', []);
+    var files = getAllFiles('./nebula/config/networks/', []);
     var filtered = [];
     for(var i=0; i<files.length; i++){
         if ( files[i].endsWith(".0") ){

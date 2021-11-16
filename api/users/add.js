@@ -31,7 +31,7 @@ module.exports = async (event) => {
 
 
     var subnetArr = subnet.split('.');
-    var compositPath = "./nebula/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + subnetArr[3];
+    var compositPath = "./nebula/config/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + subnetArr[3];
     if (!fs.existsSync(compositPath)) {
         //directory doesnt exists
         return {  
@@ -83,7 +83,7 @@ module.exports = async (event) => {
     ./nebula-cert sign -name "${clientName}" -ip "${ipfound}/8" -out-key /tmp/${ipfound}.key -out-crt /tmp/${ipfound}.crt
     `);
 
-    var ca = fs.readFileSync("./nebula/ca.crt", {encoding:'utf8', flag:'r'});
+    var ca = fs.readFileSync("./nebula/config/ca.crt", {encoding:'utf8', flag:'r'});
     var crt = fs.readFileSync("/tmp/" + ipfound + ".crt", {encoding:'utf8', flag:'r'});
     var key = fs.readFileSync("/tmp/" + ipfound + ".key", {encoding:'utf8', flag:'r'});
 
@@ -167,7 +167,9 @@ firewall:
         clientYML: yml
     }
 
-    fs.writeFileSync(compositPath + "/" + ipfound, JSON.stringify(response, null, 4));
+    var fileWriteResult = fs.writeFileSync(compositPath + "/" + ipfound, JSON.stringify(response, null, 4));
+    console.log(compositPath + "/" + ipfound)
+    console.log(fileWriteResult)
     
     return {  
         httpStatus: "200",

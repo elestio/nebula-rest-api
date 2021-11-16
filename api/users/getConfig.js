@@ -18,7 +18,7 @@ module.exports = async (event) => {
 
 
     var subnetArr = ip.split('.');
-    var compositPath = "./nebula/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + "0";
+    var compositPath = "./nebula/config/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + "0";
     if (!fs.existsSync(compositPath)) {
         //directory doesnt exists
         return {  

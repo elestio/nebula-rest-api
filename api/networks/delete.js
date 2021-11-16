@@ -19,7 +19,7 @@ module.exports = async (event) => {
 
 
     var subnetArr = subnet.split('.');
-    var compositPath = "./nebula/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + subnetArr[3];
+    var compositPath = "./nebula/config/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + subnetArr[3];
     if (!fs.existsSync(compositPath)) {
         //directory doesnt exists
         return {  
@@ -33,7 +33,7 @@ module.exports = async (event) => {
     }
 
     //remove that network folder
-    var compositRange = "./nebula/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/";
+    var compositRange = "./nebula/config/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/";
     fs.rm(compositRange, { recursive: true }, function(){});
 
     return {  

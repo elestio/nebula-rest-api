@@ -20,7 +20,7 @@ services:
       - "4242:4242/udp"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./nebula:/usr/src/app/nebula
+      - ./nebula/config:/usr/src/app/nebula/config
 
   caddy:
     image: caddy

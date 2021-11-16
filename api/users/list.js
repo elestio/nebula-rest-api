@@ -18,7 +18,7 @@ module.exports = async (event) => {
     }
 
     var subnetArr = subnet.split('.');
-    var compositPath = "./nebula/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + "0";
+    var compositPath = "./nebula/config/networks/" + subnetArr[0] + "/" + subnetArr[1] + "/" + subnetArr[2] + "/" + "0";
 
 
     var files = getAllFiles(compositPath, []);

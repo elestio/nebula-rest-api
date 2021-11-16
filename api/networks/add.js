@@ -20,7 +20,7 @@ module.exports = async (event) => {
 
     //find last network created
     var lastNetwork = "10.17.0.0";
-    var lastNetworkFile = "./nebula/networks/last.txt";
+    var lastNetworkFile = "./nebula/config/networks/last.txt";
     if (fs.existsSync(lastNetworkFile)) {
         lastNetwork = fs.readFileSync(lastNetworkFile, {encoding:'utf8', flag:'r'});
     }
@@ -33,7 +33,7 @@ module.exports = async (event) => {
     //console.log("New Network: " + newNetworkStr);
 
     //create folder structure for the new network (this replace a db ...)
-    var compositPath = "./nebula/networks/" + newNetwork[0] + "/" + newNetwork[1] + "/" + newNetwork[2] + "/" + newNetwork[3];
+    var compositPath = "./nebula/config/networks/" + newNetwork[0] + "/" + newNetwork[1] + "/" + newNetwork[2] + "/" + newNetwork[3];
     fs.mkdirSync(compositPath, { recursive: true });
     fs.writeFileSync(compositPath + "/" + newNetworkStr, networkName);
 

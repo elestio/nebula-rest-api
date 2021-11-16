@@ -6,4 +6,5 @@ nebula/ca.key
 nebula/lh.yml
 nebula/lh.crt
 nebula/lh.key
+nebula/config/*
 caddy/*

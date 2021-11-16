@@ -23,11 +23,17 @@ module.exports.execCommand = async (command) => {
 
 module.exports.CheckLighthouseInstallation = async () => {
 
-    var expectedPath = './nebula/ca.key';
+    var expectedPath = './nebula/config/ca.key';
 
     if (fs.existsSync(expectedPath)) {
         //file exists
         console.log("Global cert found!");
+
+        var result = await this.execCommand(`
+        cp ./nebula/config/ca.key ./nebula/ca.key
+        cp ./nebula/config/ca.crt ./nebula/ca.crt        
+        `);
+        console.log(result)
     }
     else{
         console.log("global cert NOT found!");
@@ -80,11 +86,11 @@ async function runInBGLoop(){
         //}
 
         //write lighthouse config file
-        fs.writeFileSync("./nebula/lh.yml", `
+        fs.writeFileSync("./nebula/config/lh.yml", `
 pki:
-    ca: ${root}/nebula/ca.crt
-    cert: ${root}/nebula/lh.crt
-    key: ${root}/nebula/lh.key
+    ca: ${root}/nebula/config/ca.crt
+    cert: ${root}/nebula/config/lh.crt
+    key: ${root}/nebula/config/lh.key
 
 static_host_map:
     "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]
@@ -141,14 +147,21 @@ inbound:
     while(true){
         await execCommand(`
         mkdir -p /etc/nebula/
-        cp ./nebula/ca.crt /etc/nebula/ca.crt
-        cp ./nebula/ca.key /etc/nebula/ca.key
         
-        cp ./nebula/lh.crt /etc/nebula/lh.crt;
-        cp ./nebula/lh.key /etc/nebula/lh.key;
-        cp ./nebula/lh.yml /etc/nebula/lh.yml;
+        cp ./nebula/ca.crt ./nebula/config/ca.crt
+        cp ./nebula/ca.key ./nebula/config/ca.key
 
-        ./nebula/nebula -config ./nebula/lh.yml
+        cp ./nebula/config/ca.crt /etc/nebula/ca.crt
+        cp ./nebula/config/ca.key /etc/nebula/ca.key
+        
+        cp ./nebula/lh.crt ./nebula/config/lh.crt
+        cp ./nebula/lh.key ./nebula/config/lh.key
+
+        cp ./nebula/config/lh.crt /etc/nebula/lh.crt;
+        cp ./nebula/config/lh.key /etc/nebula/lh.key;
+        cp ./nebula/config/lh.yml /etc/nebula/lh.yml;
+
+        ./nebula/nebula -config ./nebula/config/lh.yml
         `);
     }
 }
