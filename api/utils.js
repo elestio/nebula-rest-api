@@ -33,7 +33,7 @@ module.exports.CheckLighthouseInstallation = async () => {
         cp ./nebula/config/ca.key ./nebula/ca.key
         cp ./nebula/config/ca.crt ./nebula/ca.crt        
         `);
-        console.log(result)
+        //console.log(result)
     }
     else{
         console.log("global cert NOT found!");
@@ -62,30 +62,10 @@ module.exports.CheckLighthouseInstallation = async () => {
 
     }
 
-    console.log("Run LH");
-    runInBGLoop(); //do not await
-
-    return result;
-    
-}
-
-//Run Nebula in a background infinite loop 
-//to ensure it will restart in case of crash
-async function runInBGLoop(){
-
-    //console.log(JSON.stringify(await execCommand(`echo "path: $PWD"`)) );
-
-    var root = require('path').resolve('./');
-
-        //console.log("root: ", root)
-
-        var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
-        var isTapDisabled = false;
-        //if (runInDocker){
-        //    isTapDisabled = true;
-        //}
-
-        //write lighthouse config file
+    //write lighthouse config file if not present
+    expectedPath = './nebula/config/lh.yml';
+    if (!fs.existsSync(expectedPath)) {
+        
         fs.writeFileSync("./nebula/config/lh.yml", `
 pki:
     ca: ${root}/nebula/config/ca.crt
@@ -143,6 +123,32 @@ inbound:
       proto: icmp
       host: any
 `);
+    }
+    
+
+    console.log("Run LH");
+    runInBGLoop(); //do not await
+
+    return result;
+    
+}
+
+//Run Nebula in a background infinite loop 
+//to ensure it will restart in case of crash
+async function runInBGLoop(){
+
+    //console.log(JSON.stringify(await execCommand(`echo "path: $PWD"`)) );
+
+    var root = require('path').resolve('./');
+
+        //console.log("root: ", root)
+
+        var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
+        var isTapDisabled = false;
+        //if (runInDocker){
+        //    isTapDisabled = true;
+        //}
+
 
     while(true){
         await execCommand(`
