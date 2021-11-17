@@ -35,7 +35,7 @@
         },
         "/api/users/getConfig": {
             "path": "/api/users/getConfig.js",
-            "method": "POST",
+            "method": "GET",
             "parametersList": [
                 "ip"
             ],

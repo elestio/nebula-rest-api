@@ -146,12 +146,7 @@ firewall:
       host: any
 
   inbound:
-    # Allow icmp between any nebula hosts
-    - port: any
-      proto: icmp
-      cidr: ${subnet}/24
-
-    # Allow tcp/443 from any host with BOTH laptop and home group
+    # Allow all traffic from any host on same subnet
     - port: any
       proto: any
       cidr: ${subnet}/24
@@ -168,8 +163,8 @@ firewall:
     }
 
     var fileWriteResult = fs.writeFileSync(compositPath + "/" + ipfound, JSON.stringify(response, null, 4));
-    console.log(compositPath + "/" + ipfound)
-    console.log(fileWriteResult)
+    //console.log(compositPath + "/" + ipfound)
+    //console.log(fileWriteResult)
     
     return {  
         httpStatus: "200",
