@@ -115,7 +115,7 @@ systemctl enable nebula
 
         return {  
             httpStatus: "200",
-            headers:{ "Content-Type": "text/x-shellscript" },  
+            headers:{ "Content-Type": "text/x-shellscript", "Content-Disposition": 'attachment; filename="nebula_' + ip + '.sh"' },  
             content: shell
         };
     }
