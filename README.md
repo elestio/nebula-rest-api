@@ -221,10 +221,11 @@ MacOSX:
 
 Linux: 
 
+    service nebula stop
     systemctl disable nebula;
     rm /etc/systemd/system/nebula.service;
-    systemctl daemon-reload;
     rm -rf /opt/nebula/;
+    systemctl daemon-reload;
 
 Windows:
 
