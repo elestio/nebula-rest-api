@@ -119,6 +119,74 @@ systemctl enable nebula
             content: shell
         };
     }
+    else if (mode == "windows"){
+        
+        var nebula_ca = json.ca; 
+        var nebula_crt = json.crt; 
+        var nebula_key = json.key; 
+        var nebula_yml = json.clientYML;
+
+var powershell = `
+
+Set-Variable -Name pathNebula -Value $env:UserProfile\\Documents\\Nebula
+
+#create folder if not exist
+If (!(test-path $pathNebula))
+{
+    md $pathNebula
+}
+
+#create nebula conf files
+New-Item -Force $pathNebula\\ca.crt
+Add-Content -Path "$pathNebula\\ca.crt" -Value @"
+${nebula_ca}
+"@
+
+New-Item -Force $pathNebula\\client.crt
+Add-Content -Path "$pathNebula\\client.crt" -Value @"
+${nebula_crt}
+"@
+
+New-Item -Force $pathNebula\\client.key
+Add-Content -Path "$pathNebula\\client.key" -Value @"
+${nebula_key}
+"@
+
+New-Item -Force $pathNebula\\client.yml
+Add-Content -Path "$pathNebula\\client.yml" -Value @"
+${nebula_yml}
+"@
+
+New-Item -Force $pathNebula\\client.yml
+Add-Content -Path "$pathNebula\\client.yml" -Value @"
+${nebula_yml}
+"@.Replace("/etc/nebula/", "$pathNebula\\")
+
+New-Item -Force $pathNebula\\uninstall.ps1
+Add-Content -Path "$pathNebula\\uninstall.ps1" -Value @"
+Set-Variable -Name pathNebula -Value $env:UserProfile\Documents\Nebula
+Stop-Service -Name "Nebula Network Service"
+Invoke-Expression "& \`"$pathNebula\\nebula.exe\`" -service uninstall -config $pathNebula\\client.yml"
+"@
+
+#download into temp file
+Write-Output "downloading zip"
+#Invoke-WebRequest -Uri "https://github.com/slackhq/nebula/releases/download/v1.5.0/nebula-windows-amd64.zip" -OutFile $pathNebula\\nebula.zip
+$WebClient = New-Object System.Net.WebClient
+$WebClient.DownloadFile("https://github.com/elestio/nebula-rest-api/raw/main/nebula/nebula.exe","$pathNebula\\nebula.exe")
+
+#install as a service
+Invoke-Expression "& \`"$pathNebula\\nebula.exe\`" -service install -config $pathNebula\\client.yml"
+Start-Service -Name "Nebula Network Service"
+
+`;
+
+        return {  
+            httpStatus: "200",
+            headers:{ "Content-Type": "application/octet-stream", "Content-Disposition": 'attachment; filename="nebula_' + ip + '.ps1"' },  
+            content: powershell
+        };
+    }
 
 
 };
