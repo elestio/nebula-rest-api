@@ -136,6 +136,11 @@ If (!(test-path $pathNebula))
     md $pathNebula
 }
 
+If (!(test-path $pathNebula\\dist\\windows\\wintun\\bin\\amd64\\))
+{
+    md $pathNebula\\dist\\windows\\wintun\\bin\\amd64\\
+}
+
 #create nebula conf files
 New-Item -Force $pathNebula\\ca.crt
 Add-Content -Path "$pathNebula\\ca.crt" -Value @"
@@ -174,6 +179,7 @@ Write-Output "downloading zip"
 #Invoke-WebRequest -Uri "https://github.com/slackhq/nebula/releases/download/v1.5.0/nebula-windows-amd64.zip" -OutFile $pathNebula\\nebula.zip
 $WebClient = New-Object System.Net.WebClient
 $WebClient.DownloadFile("https://github.com/elestio/nebula-rest-api/raw/main/nebula/nebula.exe","$pathNebula\\nebula.exe")
+$WebClient.DownloadFile("https://github.com/elestio/nebula-rest-api/raw/main/nebula/wintun.dll","$pathNebula\\dist\\windows\\wintun\\bin\\amd64\\wintun.dll")
 
 #install as a service
 Invoke-Expression "& \`"$pathNebula\\nebula.exe\`" -service install -config $pathNebula\\client.yml"
