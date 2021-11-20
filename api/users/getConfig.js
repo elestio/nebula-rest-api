@@ -167,11 +167,19 @@ Add-Content -Path "$pathNebula\\client.yml" -Value @"
 ${nebula_yml}
 "@.Replace("/etc/nebula/", "$pathNebula\\")
 
+
+New-Item -Force $pathNebula\\install.ps1
+Add-Content -Path "$pathNebula\\install.ps1" -Value @"
+Set-Variable -Name pathNebula -Value $env:UserProfile\\Documents\\Nebula
+Invoke-Expression "$pathNebula\\nebula.exe -service install -config $pathNebula\\client.yml"
+Start-Service -Name "Nebula Network Service"
+"@
+
 New-Item -Force $pathNebula\\uninstall.ps1
 Add-Content -Path "$pathNebula\\uninstall.ps1" -Value @"
-Set-Variable -Name pathNebula -Value $env:UserProfile\Documents\Nebula
+Set-Variable -Name pathNebula -Value $env:UserProfile\\Documents\\Nebula
 Stop-Service -Name "Nebula Network Service"
-Invoke-Expression "& \`"$pathNebula\\nebula.exe\`" -service uninstall -config $pathNebula\\client.yml"
+Invoke-Expression "$pathNebula\\nebula.exe -service uninstall"
 "@
 
 #download into temp file

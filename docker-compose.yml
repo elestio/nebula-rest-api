@@ -12,6 +12,7 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun
+    stop_grace_period: 1s
     ports:
       - "4242:4242/udp"
     volumes:

@@ -17,6 +17,7 @@ const SSL_PORT = process.env.SSL_PORT || 443;
 const SSL_CERT = process.env.SSL_CERT;
 const SSL_KEY = process.env.SSL_KEY;
 
+var app = null;
 
 //low precision current timestamp, this is much faster than creating a new timestamp on each request
 var globalTimestamp = -1;
@@ -54,7 +55,7 @@ if (isMainThread) {
 } else {
     /* Here we are inside a worker thread */
 
-    var app = null;
+    
 
     if (sslActivated != "1") {
         app = coregate.App();
@@ -362,6 +363,7 @@ if (isMainThread) {
 
     //start listening
     app.listen(parseInt(finalPort), (token) => {
+        serverListenToken = token;
         if (token) {
             console.log('Listening to port ' + finalPort + ' from thread ' + threadId);
         } else {
@@ -369,6 +371,8 @@ if (isMainThread) {
         }
     });
 }
+
+var serverListenToken = null;
 
 
 function handleCorsFor(app, path){

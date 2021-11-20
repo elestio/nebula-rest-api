@@ -38,10 +38,17 @@ module.exports.CheckLighthouseInstallation = async () => {
     else{
         console.log("global cert NOT found!");
 
-        //create global cert
+        //create global cert for 25 years
         var result = await this.execCommand(`
         cd ./nebula;
-        ./nebula-cert ca -name "nebula-rest-api" 
+
+        #remove old stuffs in the nebula production folder
+        rm -f ca.crt
+        rm -f ca.key
+        rm -f lh.crt
+        rm -f lh.key
+
+        ./nebula-cert ca -duration 219000h0m0s  -name "nebula-rest-api" 
 
         mkdir -p /etc/nebula/;
         cp ca.crt /etc/nebula/ca.crt;
@@ -63,6 +70,11 @@ module.exports.CheckLighthouseInstallation = async () => {
     }
 
     //write lighthouse config file if not present
+    var root = require('path').resolve('./');
+    //var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
+    var isTapDisabled = false;
+    
+
     expectedPath = './nebula/config/lh.yml';
     if (!fs.existsSync(expectedPath)) {
         
@@ -160,12 +172,12 @@ async function runInBGLoop(){
         cp ./nebula/config/ca.crt /etc/nebula/ca.crt
         cp ./nebula/config/ca.key /etc/nebula/ca.key
         
-        cp ./nebula/lh.crt ./nebula/config/lh.crt
-        cp ./nebula/lh.key ./nebula/config/lh.key
+        #cp ./nebula/lh.crt ./nebula/config/lh.crt
+        #cp ./nebula/lh.key ./nebula/config/lh.key
 
-        cp ./nebula/config/lh.crt /etc/nebula/lh.crt;
-        cp ./nebula/config/lh.key /etc/nebula/lh.key;
-        cp ./nebula/config/lh.yml /etc/nebula/lh.yml;
+        #cp ./nebula/config/lh.crt /etc/nebula/lh.crt;
+        #cp ./nebula/config/lh.key /etc/nebula/lh.key;
+        #cp ./nebula/config/lh.yml /etc/nebula/lh.yml;
 
         ./nebula/nebula -config ./nebula/config/lh.yml
         `);
