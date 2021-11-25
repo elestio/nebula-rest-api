@@ -216,6 +216,10 @@ MacOSX:
     
     Not yet done
 
+JSON (Generic):
+
+    https://YOUR_HOST_DOMAIN_HERE/api/users/getConfig?apiKey=YOUR_API_KEY_HERE&mode=json&ip=10.17.3.1
+
 &nbsp;
 ## How to uninstall
 
