@@ -69,8 +69,22 @@ module.exports.CheckLighthouseInstallation = async () => {
 
     }
 
-    //write lighthouse config file if not present
     var root = require('path').resolve('./');
+
+    expectedPath = './nebula/config/lh.key';
+    if (!fs.existsSync(expectedPath)) {
+        var result = await this.execCommand(`
+        cd ./nebula;
+
+        ./nebula-cert sign -name "lh" -ip "10.255.255.1/8"
+
+        cp lh.crt ${root}/nebula/config/lh.crt;
+        cp lh.key ${root}/nebula/config/lh.key;
+        
+        `);
+    }
+
+    //write lighthouse config file if not present
     //var runInDocker = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     var isTapDisabled = false;
     
@@ -172,8 +186,8 @@ async function runInBGLoop(){
         cp ./nebula/config/ca.crt /etc/nebula/ca.crt
         cp ./nebula/config/ca.key /etc/nebula/ca.key
         
-        #cp ./nebula/lh.crt ./nebula/config/lh.crt
-        #cp ./nebula/lh.key ./nebula/config/lh.key
+        cp ./nebula/lh.crt ./nebula/config/lh.crt
+        cp ./nebula/lh.key ./nebula/config/lh.key
 
         #cp ./nebula/config/lh.crt /etc/nebula/lh.crt;
         #cp ./nebula/config/lh.key /etc/nebula/lh.key;

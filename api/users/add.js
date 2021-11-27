@@ -90,6 +90,49 @@ module.exports = async (event) => {
     fs.rm("/tmp/" + ipfound + ".crt", { recursive: false }, function(){});
     fs.rm("/tmp/" + ipfound + ".key", { recursive: false }, function(){});
 
+    var static_host_map = `
+static_host_map:
+  "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]    
+`;
+
+    var hosts = `
+  hosts:
+    - "10.255.255.1"
+`;
+
+//Handle custom LH IP
+if (process.env.LIGHTHOUSE_IP != "10.255.255.1"){
+  static_host_map = `
+static_host_map:
+  "${process.env.LIGHTHOUSE_IP}": ["${process.env.HOST_DOMAIN}:4242"]`;
+  
+  hosts = `
+  hosts:
+    - "${process.env.LIGHTHOUSE_IP}"
+`;
+
+}
+
+//Handle additional LH Nodes
+//console.log("process.env.OTHER_LIGHTHOUSES: ", process.env.OTHER_LIGHTHOUSES)
+
+if (process.env.OTHER_LIGHTHOUSES != null && process.env.OTHER_LIGHTHOUSES != ""){
+    var rows = process.env.OTHER_LIGHTHOUSES.split(';');
+    var addedHostMap = ""; var addedLHNodes = "";
+    for(var i=0; i < rows.length; i++){
+        var curRow = rows[i].split(',');
+        addedHostMap += `  "${curRow[0]}": ["${curRow[1]}"]
+`;
+
+        addedLHNodes += `    - "${curRow[0]}"
+`;
+    }
+
+    static_host_map += addedHostMap;
+    hosts += addedLHNodes;
+
+}
+
     var yml = `
 pki:
   # The CAs that are accepted by this node. Must contain one or more certificates created by 'nebula-cert ca'
@@ -97,8 +140,7 @@ pki:
   cert: /etc/nebula/client.crt
   key: /etc/nebula/client.key
 
-static_host_map:
-  "10.255.255.1": ["${process.env.HOST_DOMAIN}:4242"]
+${static_host_map}
 
 
 lighthouse:
@@ -107,8 +149,7 @@ lighthouse:
   # hosts is a list of lighthouse hosts this node should report to and query from
   # IMPORTANT: THIS SHOULD BE EMPTY ON LIGHTHOUSE NODES
   # IMPORTANT2: THIS SHOULD BE LIGHTHOUSES' NEBULA IPs, NOT LIGHTHOUSES' REAL ROUTABLE IPs
-  hosts:
-    - "10.255.255.1"
+  ${hosts}
 
 listen:
   # To listen on both any ipv4 and ipv6 use "[::]"

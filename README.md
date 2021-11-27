@@ -45,6 +45,12 @@ Then change the values for all env vars:
     #API Key is also used to access the WEB UI and call the REST API
     NEBULA_REST_API_KEY=random_very_long_string
 
+    #This lighouse instance
+    LIGHTHOUSE_IP=10.255.255.1
+    #Optional: if you have multiple Lightouse nodes (format: LH_nebula_ip,real ip or cname:port)
+    #OTHER_LIGHTHOUSES=10.255.255.2,lh2.elest.io:4242;10.255.255.3,lh3.elest.io:4242
+
+
     #Optional: indicate the path to your certificate and key files in PEM format
     SSL_CERT=/path/to/your/fullchain.pem
     SSL_KEY=/path/to/your/privkey.pem
