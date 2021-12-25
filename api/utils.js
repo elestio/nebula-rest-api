@@ -91,10 +91,6 @@ module.exports.CheckLighthouseInstallation = async () => {
 
     expectedPath = './nebula/config/lh.yml';
     if (!fs.existsSync(expectedPath)) {
-
-        const caData = fs.readFileSync('./nebula/config/ca.crt', {encoding:'utf8', flag:'r'});
-        const cerData = fs.readFileSync('./nebula/config/lh.crt', {encoding:'utf8', flag:'r'});
-        const keyData = fs.readFileSync('./nebula/config/lh.key', {encoding:'utf8', flag:'r'});
         
         fs.writeFileSync("./nebula/config/lh.yml", `
 pki:
@@ -190,8 +186,8 @@ async function runInBGLoop(){
         cp ./nebula/config/ca.crt /etc/nebula/ca.crt
         cp ./nebula/config/ca.key /etc/nebula/ca.key
         
-        cp ./nebula/lh.crt ./nebula/config/lh.crt
-        cp ./nebula/lh.key ./nebula/config/lh.key
+        #cp ./nebula/lh.crt ./nebula/config/lh.crt
+        #cp ./nebula/lh.key ./nebula/config/lh.key
 
         #cp ./nebula/config/lh.crt /etc/nebula/lh.crt;
         #cp ./nebula/config/lh.key /etc/nebula/lh.key;
@@ -210,7 +206,7 @@ async function runInBGLoop(){
     var exec = require('child_process').exec;
     var child = exec(cmd);
     child.stdout.on('data', function(data) {
-        console.log('stdout: ' + data);
+        console.log(data);
     });
     child.stderr.on('data', function(data) {
         console.log('stderr: ' + data);
