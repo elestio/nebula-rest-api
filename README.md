@@ -85,9 +85,12 @@ If you want to ensure a full rebuild add `--no-cache` after the build command li
 ## Run in DEV mode without docker 
 
 Install node.js
+
 	curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 	sudo apt install -y nodejs
+	
 Run:
+
 	node index.js
 
 ## Run as a service with pm2
